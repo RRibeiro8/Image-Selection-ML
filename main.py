@@ -11,6 +11,21 @@ import pickle
 
 DB_PATH = "dataset/"
 
+## Documentation for a class.
+#
+#  More details.
+class Img_class:
+
+	## The constructor.
+	def __init__(self, img, pred):
+		self.img = img
+		self.pred = pred
+
+	## Documentation for a method result.
+	#  @param self The object pointer.
+	def result(self):
+		print(self.pred)
+
 ## ModifiedLaplacian is the function that quantifies the quality of images focus.
 #  This measure is based on an alternative definition of the Laplacian one, and it can be used as a blur measure operator included on derivative-based operators.
 #  @param img The binary gray scale image
@@ -56,6 +71,8 @@ def main():
 
 	for img_name in list_dir:
 
+
+
 		img = cv2.imread(DB_PATH + img_name)
 
 		im_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -66,8 +83,13 @@ def main():
 		features = extract_features(q)
 
 		prediction = model.predict([features])
-
+		print("###1##")
 		print(prediction)
+
+		obj = Img_class(img, prediction)
+
+		print("###2##")
+		print(obj.pred)
 
 		cv2.imshow("Image", img)
 
