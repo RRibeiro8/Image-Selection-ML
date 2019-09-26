@@ -6,8 +6,19 @@ import pickle
 
 DB_PATH = "dataset/"
 
-def ModifiedLaplacian(img):
+"""@package image_selector
+Documentation for selecting images using focus measure operators and machine learning. 
 
+"""
+
+def ModifiedLaplacian(img):
+	"""ModifiedLaplacian is the function that quantifies the quality of
+images focus.
+	
+	This measure is based on an alternative definition of the Laplacian one, and it can be used as a blur measure
+operator included on derivative-based operators.
+	@param img The binary gray scale image
+	"""
 	k = np.array([[-1], [2], [-1]])
 	k_t = k.conj().T
 
@@ -21,7 +32,10 @@ def ModifiedLaplacian(img):
 	return q
 
 def extract_features(q):
+	"""Extract standard statistics from maps.
 
+	Standard statistics of the maps were computed to be used as features in supervised learning algorithms.
+	"""
 	stddev = np.std(q)
 	variance = np.var(q)
 	weight = np.average(q)
@@ -30,11 +44,19 @@ def extract_features(q):
 
 	return features
 
-def main():
+	"""@var features 
+	Array with 3 different features...
+	"""
 
+def main():
+	"""Main function
+
+	More details...
+	"""
 	classifier_f = open("model/MLAP_KNN_model.pickle", "rb")
 	model = pickle.load(classifier_f)
 	classifier_f.close()
+
 
 	list_dir = sorted(os.listdir(DB_PATH))
 
