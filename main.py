@@ -1,3 +1,8 @@
+##@package image_selector
+#Documentation for selecting images using focus measure operators and machine learning. 
+#
+#More details.
+
 import numpy as np
 import cv2
 import os
@@ -6,19 +11,11 @@ import pickle
 
 DB_PATH = "dataset/"
 
-"""@package image_selector
-Documentation for selecting images using focus measure operators and machine learning. 
-
-"""
-
+## ModifiedLaplacian is the function that quantifies the quality of images focus.
+#  This measure is based on an alternative definition of the Laplacian one, and it can be used as a blur measure operator included on derivative-based operators.
+#  @param img The binary gray scale image
 def ModifiedLaplacian(img):
-	"""ModifiedLaplacian is the function that quantifies the quality of
-images focus.
-	
-	This measure is based on an alternative definition of the Laplacian one, and it can be used as a blur measure
-operator included on derivative-based operators.
-	@param img The binary gray scale image
-	"""
+
 	k = np.array([[-1], [2], [-1]])
 	k_t = k.conj().T
 
@@ -30,29 +27,26 @@ operator included on derivative-based operators.
 	q[np.isnan(q)] = np.min(q)
 
 	return q
-
+## Extract standard statistics from maps.
+#
+#  Standard statistics of the maps were computed to be used as features in supervised learning algorithms.
 def extract_features(q):
-	"""Extract standard statistics from maps.
 
-	Standard statistics of the maps were computed to be used as features in supervised learning algorithms.
-	"""
 	stddev = np.std(q)
 	variance = np.var(q)
 	weight = np.average(q)
 
 	features = np.array([stddev, variance, weight])
+	## @var features 
+	#  Array with 3 different features
 
 	return features
 
-	"""@var features 
-	Array with 3 different features...
-	"""
-
+## Main function
+#
+#  More details
 def main():
-	"""Main function
 
-	More details...
-	"""
 	classifier_f = open("model/MLAP_KNN_model.pickle", "rb")
 	model = pickle.load(classifier_f)
 	classifier_f.close()
